@@ -25,30 +25,56 @@ export const OrderTracking = () => {
     setError(null);
     setOrders(null);
 
+    let serverResults = [];
     try {
       const res = await fetch(`/api/orders/track?query=${encodeURIComponent(term.trim())}`);
       const contentType = res.headers.get('content-type');
-      let data;
       if (contentType && contentType.includes('application/json')) {
-        data = await res.json();
-      } else {
-        throw new Error('API server returned invalid response.');
-      }
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to search order');
-      }
-
-      if (data && data.length > 0) {
-        setOrders(data);
-      } else {
-        setError('No order found matching this Order ID or Phone Number. Please check your order confirmation details.');
+        const data = await res.json();
+        if (res.ok && Array.isArray(data)) {
+          serverResults = data;
+        }
       }
     } catch (err) {
-      setError(err.message || 'Error fetching tracking details');
-    } finally {
-      setLoading(false);
+      console.warn('API fetch warning:', err.message);
     }
+
+    // Fallback search in user's browser localStorage placed orders
+    let localMatching = [];
+    try {
+      const localOrders = JSON.parse(localStorage.getItem('ilai_user_orders') || '[]');
+      const qStr = term.trim().toLowerCase();
+      const cleanQ = qStr.replace(/[^a-z0-9]/g, '');
+      const numQ = qStr.replace(/\D/g, '');
+
+      localMatching = localOrders.filter(o => {
+        const orderNum = String(o.order_number || '').toLowerCase();
+        const cleanNum = orderNum.replace(/[^a-z0-9]/g, '');
+        const orderId = String(o.id || '');
+        const phone = String(o.customer_phone || '').replace(/\D/g, '');
+
+        return orderNum.includes(qStr) || 
+               (cleanQ && cleanNum.includes(cleanQ)) || 
+               orderId === qStr || 
+               (numQ && parseInt(numQ, 10) === o.id) ||
+               (numQ && phone.includes(numQ));
+      });
+    } catch (e) {}
+
+    // Deduplicate combined results
+    const combinedMap = new Map();
+    [...serverResults, ...localMatching].forEach(o => {
+      combinedMap.set(String(o.id || o.order_number), o);
+    });
+
+    const finalOrders = Array.from(combinedMap.values());
+
+    if (finalOrders.length > 0) {
+      setOrders(finalOrders);
+    } else {
+      setError('No order found matching this Order ID or Phone Number. Please check your order confirmation details.');
+    }
+    setLoading(false);
   };
 
   const handleSubmit = (e) => {
@@ -118,17 +144,24 @@ export const OrderTracking = () => {
             <span>Try sample order:</span>
             <button 
               type="button" 
+              onClick={() => { setQuery('#ILAI-004'); fetchOrderTracking('#ILAI-004'); }}
+              className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
+            >
+              #ILAI-004
+            </button>
+            <button 
+              type="button" 
+              onClick={() => { setQuery('#ILAI004'); fetchOrderTracking('#ILAI004'); }}
+              className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
+            >
+              #ILAI004
+            </button>
+            <button 
+              type="button" 
               onClick={() => { setQuery('#ILAI-003'); fetchOrderTracking('#ILAI-003'); }}
               className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
             >
               #ILAI-003
-            </button>
-            <button 
-              type="button" 
-              onClick={() => { setQuery('#ILAI003'); fetchOrderTracking('#ILAI003'); }}
-              className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
-            >
-              #ILAI003
             </button>
             <button 
               type="button" 

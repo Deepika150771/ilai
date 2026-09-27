@@ -26,8 +26,42 @@ if (supabase) {
 
 // Initial Data structure
 const defaultData = {
-  counter: 4, // Sequential counter starting from 1
+  counter: 5, // Sequential counter starting from 1
   orders: [
+    {
+      id: 4,
+      order_number: "#ILAI-004",
+      customer_name: "Deepika SM",
+      customer_email: "06deepikamyndhu2007@gmail.com",
+      customer_phone: "08072757497",
+      shipping_address: "Dharapuram",
+      city: "Chennai",
+      district: "Chennai",
+      pincode: "638701",
+      state: "Tamil Nadu",
+      items: [
+        {
+          id: "pad-xl-6",
+          title: "ilai XL Biodegradable Sanitary Pads (6 Pads Pack)",
+          quantity: 1,
+          price: 45,
+          pack_details: "6 pads per pack | XL size | Banana Fibre & Water Hyacinth"
+        }
+      ],
+      subtotal: 45,
+      shipping_fee: 40,
+      discount: 0,
+      total_amount: 85,
+      payment_method: "gpay",
+      payment_status: "pending_verification",
+      order_status: "pending_verification",
+      utr_number: "428901928376",
+      payment_proof_url: "",
+      courier_name: "",
+      tracking_number: "",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
     {
       id: 3,
       order_number: "#ILAI-003",

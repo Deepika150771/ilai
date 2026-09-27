@@ -27,7 +27,13 @@ export const OrderTracking = () => {
 
     try {
       const res = await fetch(`/api/orders/track?query=${encodeURIComponent(term.trim())}`);
-      const data = await res.json();
+      const contentType = res.headers.get('content-type');
+      let data;
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        throw new Error('API server returned invalid response.');
+      }
 
       if (!res.ok) {
         throw new Error(data.error || 'Failed to search order');

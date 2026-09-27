@@ -27,9 +27,13 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Serve static uploaded screenshots & images
-const uploadsDir = path.join(__dirname, '../public/uploads');
+const uploadsDir = process.env.VERCEL ? path.join('/tmp', 'uploads') : path.join(__dirname, '../public/uploads');
 if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+  try {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  } catch (e) {
+    console.warn('Could not create uploads directory:', e.message);
+  }
 }
 app.use('/uploads', express.static(uploadsDir));
 
@@ -222,6 +226,10 @@ app.post('/api/test-email', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 ilai Express Server running on http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 ilai Express Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;

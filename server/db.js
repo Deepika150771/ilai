@@ -8,7 +8,7 @@ dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_FILE = path.join(__dirname, 'orders_db.json');
+const DB_FILE = process.env.VERCEL ? path.join('/tmp', 'orders_db.json') : path.join(__dirname, 'orders_db.json');
 
 // Initialize Supabase client if keys exist
 const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
@@ -103,7 +103,11 @@ const defaultData = {
 function loadLocalData() {
   try {
     if (!fs.existsSync(DB_FILE)) {
-      fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+      try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+      } catch (e) {
+        console.warn('Could not write initial DB file:', e.message);
+      }
       return defaultData;
     }
     const raw = fs.readFileSync(DB_FILE, 'utf-8');

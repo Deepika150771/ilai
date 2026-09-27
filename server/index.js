@@ -210,6 +210,34 @@ app.post('/api/orders/:id/status', async (req, res) => {
   }
 });
 
+// 7. Customer Updates Payment Proof Screenshot or UTR Number
+app.post('/api/orders/:id/update-proof', upload.single('payment_proof'), async (req, res) => {
+  try {
+    const id = req.params.id;
+    const existing = await db.getOrderById(id);
+    if (!existing) return res.status(404).json({ error: 'Order not found' });
+
+    let proofUrl = existing.payment_proof_url || '';
+    if (req.file) {
+      proofUrl = `/uploads/${req.file.filename}`;
+    }
+
+    const updates = {};
+    if (proofUrl) updates.payment_proof_url = proofUrl;
+    if (req.body.utr_number) updates.utr_number = req.body.utr_number;
+
+    const updated = await db.updateOrderStatus(id, updates);
+
+    res.json({
+      success: true,
+      message: 'Payment proof & UTR updated successfully!',
+      order: updated
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update payment proof' });
+  }
+});
+
 // 7. Test Email Dispatch Utility
 app.post('/api/test-email', async (req, res) => {
   try {

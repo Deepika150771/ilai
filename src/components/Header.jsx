@@ -10,6 +10,7 @@ export const Header = ({ activePage, setActivePage }) => {
     { id: 'home', label: 'Home' },
     { id: 'shop', label: 'Shop' },
     { id: 'product', label: 'Product Details' },
+    { id: 'my-orders', label: 'My Orders' },
     { id: 'about', label: 'About' },
     { id: 'tracking', label: 'Order Tracking' },
     { id: 'contact', label: 'Contact' },

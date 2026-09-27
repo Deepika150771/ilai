@@ -14,7 +14,29 @@ export const CartProvider = ({ children }) => {
     }
   });
 
+  const [savedOrders, setSavedOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ilai_user_orders');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
   const [toast, setToast] = useState(null);
+
+  const addSavedOrder = (order) => {
+    setSavedOrders(prev => {
+      const filtered = prev.filter(o => o.id !== order.id);
+      const updated = [order, ...filtered];
+      try {
+        localStorage.setItem('ilai_user_orders', JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save order to localStorage');
+      }
+      return updated;
+    });
+  };
 
   useEffect(() => {
     try {
@@ -80,6 +102,8 @@ export const CartProvider = ({ children }) => {
       totalItems,
       subtotal,
       shippingFee,
+      savedOrders,
+      addSavedOrder,
       toast,
       showToast
     }}>

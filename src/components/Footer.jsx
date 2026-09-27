@@ -90,6 +90,9 @@ export const Footer = ({ setActivePage }) => {
               <button onClick={() => handleNav('about')} className="nav-link-standard">About ilai Story</button>
             </li>
             <li>
+              <button onClick={() => handleNav('my-orders')} className="nav-link-standard">My Orders & Verification</button>
+            </li>
+            <li>
               <button onClick={() => handleNav('tracking')} className="nav-link-standard">Track Your Order</button>
             </li>
           </ul>

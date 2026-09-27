@@ -6,6 +6,7 @@ import { Shop } from './pages/Shop';
 import { ProductDetails } from './pages/ProductDetails';
 import { About } from './pages/About';
 import { OrderTracking } from './pages/OrderTracking';
+import { MyOrders } from './pages/MyOrders';
 import { Contact } from './pages/Contact';
 import { Cart } from './pages/Cart';
 import { AdminPanel } from './pages/AdminPanel';
@@ -13,11 +14,11 @@ import { AdminPanel } from './pages/AdminPanel';
 export function App() {
   const [activePage, setActivePage] = useState('home');
 
-  // Listen to hash changes for deep linking (e.g., #/tracking?query=#ILAI-001)
+  // Listen to hash changes for deep linking (e.g., #/my-orders or #/tracking?query=#ILAI-001)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#/', '').split('?')[0];
-      if (['home', 'shop', 'product', 'about', 'tracking', 'contact', 'cart', 'admin'].includes(hash)) {
+      if (['home', 'shop', 'product', 'my-orders', 'about', 'tracking', 'contact', 'cart', 'admin'].includes(hash)) {
         setActivePage(hash);
       }
     };
@@ -41,6 +42,8 @@ export function App() {
         return <Shop setActivePage={handlePageChange} />;
       case 'product':
         return <ProductDetails setActivePage={handlePageChange} />;
+      case 'my-orders':
+        return <MyOrders setActivePage={handlePageChange} />;
       case 'about':
         return <About setActivePage={handlePageChange} />;
       case 'tracking':

@@ -3,7 +3,7 @@ import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, ShieldCheck, MapPin, Truc
 import { useCart } from '../context/CartContext';
 
 export const Cart = ({ setActivePage }) => {
-  const { cart, removeFromCart, updateQuantity, clearCart, subtotal, shippingFee, showToast } = useCart();
+  const { cart, removeFromCart, updateQuantity, clearCart, subtotal, shippingFee, showToast, addSavedOrder } = useCart();
   
   const [formData, setFormData] = useState({
     customer_name: '',
@@ -102,6 +102,7 @@ export const Cart = ({ setActivePage }) => {
       }
 
       setOrderCompleted(data.order);
+      if (addSavedOrder) addSavedOrder(data.order);
       clearCart();
       showToast(`Order ${data.order.order_number} placed successfully! Confirmation email sent. 🌿`);
     } catch (err) {
@@ -155,17 +156,24 @@ export const Cart = ({ setActivePage }) => {
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
-              onClick={() => setActivePage('tracking')}
+              onClick={() => setActivePage('my-orders')}
               className="w-full bg-[#2E6F40] hover:bg-[#255A33] text-white font-bold py-3.5 rounded-xl shadow-md transition-all text-xs"
+            >
+              My Orders & Verification
+            </button>
+
+            <button
+              onClick={() => setActivePage('tracking')}
+              className="w-full border border-emerald-300 text-[#1E3A2B] font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-50 transition-all"
             >
               Track Order Status Live
             </button>
 
             <button
               onClick={() => { setOrderCompleted(null); setActivePage('home'); }}
-              className="w-full border border-emerald-300 text-[#1E3A2B] font-bold py-3.5 rounded-xl text-xs hover:bg-emerald-50 transition-all"
+              className="w-full border border-gray-300 text-gray-700 font-bold py-3.5 rounded-xl text-xs hover:bg-gray-50 transition-all"
             >
-              Return to Home
+              Return Home
             </button>
           </div>
 

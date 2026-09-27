@@ -26,41 +26,41 @@ if (supabase) {
 
 // Initial Data structure
 const defaultData = {
-  counter: 3, // Sequential counter starting from 1 (preset has #1 and #2)
+  counter: 4, // Sequential counter starting from 1
   orders: [
     {
-      id: 1,
-      order_number: "#ILAI-001",
-      customer_name: "Priya Sundaram",
-      customer_email: "priya.sundaram@gmail.com",
-      customer_phone: "9876543210",
-      shipping_address: "Door 42, Anna Nagar 2nd Street",
+      id: 3,
+      order_number: "#ILAI-003",
+      customer_name: "Deepika SM",
+      customer_email: "06deepikamyndhu2007@gmail.com",
+      customer_phone: "08072757497",
+      shipping_address: "Dharapuram",
       city: "Chennai",
       district: "Chennai",
-      pincode: "600040",
+      pincode: "638701",
       state: "Tamil Nadu",
       items: [
         {
           id: "pad-xl-6",
           title: "ilai XL Biodegradable Sanitary Pads (6 Pads Pack)",
-          quantity: 2,
+          quantity: 1,
           price: 45,
           pack_details: "6 pads per pack | XL size | Banana Fibre & Water Hyacinth"
         }
       ],
-      subtotal: 90,
+      subtotal: 45,
       shipping_fee: 40,
       discount: 0,
-      total_amount: 130,
+      total_amount: 85,
       payment_method: "gpay",
-      payment_status: "verified", // verified, pending_verification, cod_confirmed
-      order_status: "processing", // pending_verification, confirmed, processing, shipped, delivered, cancelled
-      utr_number: "428901928374",
-      payment_proof_url: "/images/sample_receipt.png",
+      payment_status: "pending_verification",
+      order_status: "pending_verification",
+      utr_number: "428901928375",
+      payment_proof_url: "",
       courier_name: "",
       tracking_number: "",
-      created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
-      updated_at: new Date(Date.now() - 3600000 * 24).toISOString()
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     },
     {
       id: 2,
@@ -95,6 +95,40 @@ const defaultData = {
       tracking_number: "",
       created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
       updated_at: new Date(Date.now() - 3600000 * 5).toISOString()
+    },
+    {
+      id: 1,
+      order_number: "#ILAI-001",
+      customer_name: "Priya Sundaram",
+      customer_email: "priya.sundaram@gmail.com",
+      customer_phone: "9876543210",
+      shipping_address: "Door 42, Anna Nagar 2nd Street",
+      city: "Chennai",
+      district: "Chennai",
+      pincode: "600040",
+      state: "Tamil Nadu",
+      items: [
+        {
+          id: "pad-xl-6",
+          title: "ilai XL Biodegradable Sanitary Pads (6 Pads Pack)",
+          quantity: 2,
+          price: 45,
+          pack_details: "6 pads per pack | XL size | Banana Fibre & Water Hyacinth"
+        }
+      ],
+      subtotal: 90,
+      shipping_fee: 40,
+      discount: 0,
+      total_amount: 130,
+      payment_method: "gpay",
+      payment_status: "verified",
+      order_status: "processing",
+      utr_number: "428901928374",
+      payment_proof_url: "/images/sample_receipt.png",
+      courier_name: "",
+      tracking_number: "",
+      created_at: new Date(Date.now() - 3600000 * 24).toISOString(),
+      updated_at: new Date(Date.now() - 3600000 * 24).toISOString()
     }
   ]
 };
@@ -160,12 +194,29 @@ export const db = {
 
   async getOrderByIdOrPhone(query) {
     const orders = await this.getAllOrders();
-    const qStr = String(query).trim().toLowerCase();
-    
+    const rawQuery = String(query).trim().toLowerCase();
+    const cleanQuery = rawQuery.replace(/[^a-z0-9]/g, '');
+    const numOnlyQuery = rawQuery.replace(/\D/g, '');
+
     return orders.filter(o => {
-      const matchId = String(o.id) === qStr || o.order_number.toLowerCase().includes(qStr);
-      const matchPhone = o.customer_phone.includes(qStr);
-      return matchId || matchPhone;
+      const orderNum = String(o.order_number || '').toLowerCase();
+      const cleanOrderNum = orderNum.replace(/[^a-z0-9]/g, '');
+      const orderId = String(o.id || '');
+      const orderPhone = String(o.customer_phone || '').replace(/\D/g, '');
+
+      // 1. Direct raw search match
+      if (orderNum.includes(rawQuery)) return true;
+
+      // 2. Cleaned alphanumeric match (e.g. #ILAI003 vs #ILAI-003)
+      if (cleanQuery && cleanOrderNum.includes(cleanQuery)) return true;
+
+      // 3. ID match (e.g. "3" or "003")
+      if (orderId === rawQuery || (numOnlyQuery && parseInt(numOnlyQuery, 10) === o.id)) return true;
+
+      // 4. Phone number match
+      if (numOnlyQuery && orderPhone.includes(numOnlyQuery)) return true;
+
+      return false;
     });
   },
 

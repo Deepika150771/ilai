@@ -114,21 +114,28 @@ export const OrderTracking = () => {
           </form>
 
           {/* Quick Preset Helper Button */}
-          <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-gray-500">
             <span>Try sample order:</span>
             <button 
               type="button" 
-              onClick={() => { setQuery('#ILAI-001'); fetchOrderTracking('#ILAI-001'); }}
+              onClick={() => { setQuery('#ILAI-003'); fetchOrderTracking('#ILAI-003'); }}
               className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
             >
-              #ILAI-001
+              #ILAI-003
             </button>
             <button 
               type="button" 
-              onClick={() => { setQuery('9443218765'); fetchOrderTracking('9443218765'); }}
+              onClick={() => { setQuery('#ILAI003'); fetchOrderTracking('#ILAI003'); }}
               className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
             >
-              9443218765
+              #ILAI003
+            </button>
+            <button 
+              type="button" 
+              onClick={() => { setQuery('08072757497'); fetchOrderTracking('08072757497'); }}
+              className="text-[#2E6F40] font-bold hover:underline bg-emerald-50 px-2 py-0.5 rounded"
+            >
+              08072757497
             </button>
           </div>
         </div>

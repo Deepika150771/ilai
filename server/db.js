@@ -27,6 +27,32 @@ if (supabase) {
 // Initial Data structure
 const defaultData = {
   counter: 5, // Sequential counter starting from 1
+  reviews: [
+    {
+      id: 1,
+      customer_name: "Divya M.",
+      district: "Chennai",
+      rating: 5,
+      comment: "I used to suffer from severe rashes every month with plastic pads. Switching to ILAI plant-based pads completely solved it! Extremely soft, lightweight, and eco-friendly.",
+      created_at: new Date(Date.now() - 3600000 * 48).toISOString()
+    },
+    {
+      id: 2,
+      customer_name: "Sangeetha V.",
+      district: "Coimbatore",
+      rating: 5,
+      comment: "Finding an affordable plastic-free pad for ₹45 per pack is amazing. Plus, knowing it comes from upcycled plant fibres makes me feel so proud!",
+      created_at: new Date(Date.now() - 3600000 * 24).toISOString()
+    },
+    {
+      id: 3,
+      customer_name: "Meena R.",
+      district: "Madurai",
+      rating: 5,
+      comment: "Order reached Madurai in just 2 days via ST Courier. The Cash on Delivery process was smooth and receipt confirmation was emailed instantly.",
+      created_at: new Date(Date.now() - 3600000 * 12).toISOString()
+    }
+  ],
   orders: [
     {
       id: 4,
@@ -310,5 +336,33 @@ export const db = {
       return localData.orders[index];
     }
     return null;
+  },
+
+  async getAllReviews() {
+    const localData = loadLocalData();
+    if (!localData.reviews) {
+      localData.reviews = defaultData.reviews;
+      saveLocalData(localData);
+    }
+    return localData.reviews;
+  },
+
+  async createReview(reviewData) {
+    const localData = loadLocalData();
+    if (!localData.reviews) localData.reviews = [];
+    
+    const newReview = {
+      id: Date.now(),
+      customer_name: reviewData.customer_name || 'Verified Customer',
+      district: reviewData.district || 'Tamil Nadu',
+      rating: parseInt(reviewData.rating || 5, 10),
+      comment: reviewData.comment || '',
+      created_at: new Date().toISOString()
+    };
+
+    localData.reviews.unshift(newReview);
+    saveLocalData(localData);
+
+    return newReview;
   }
 };

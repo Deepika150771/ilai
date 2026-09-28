@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Search, Clock, CheckCircle2, Truck, MapPin, AlertCircle, ShieldCheck, Upload, QrCode, Eye, RefreshCw } from 'lucide-react';
+import { Package, Search, Clock, CheckCircle2, Truck, MapPin, AlertCircle, ShieldCheck, Upload, QrCode, Eye, RefreshCw, Star, MessageSquarePlus } from 'lucide-react';
+import { ReviewModal } from '../components/ReviewModal';
 import { useCart } from '../context/CartContext';
 
 export const MyOrders = ({ setActivePage }) => {
-  const { savedOrders, showToast } = useCart();
+  const { savedOrders, showToast, addReview } = useCart();
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [displayOrders, setDisplayOrders] = useState([]);
@@ -134,6 +136,17 @@ export const MyOrders = ({ setActivePage }) => {
           <p className="text-gray-600 text-xs sm:text-sm">
             View your placed orders, check live GPay merchant verification status, and upload receipt proofs.
           </p>
+          
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => setIsReviewModalOpen(true)}
+              className="bg-[#2E6F40] hover:bg-[#255A33] text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow-md transition-all inline-flex items-center gap-2"
+            >
+              <MessageSquarePlus size={16} />
+              <span>Rate Your Experience & Leave Feedback ⭐</span>
+            </button>
+          </div>
         </div>
 
         {/* Search & Lookup Bar */}
@@ -409,6 +422,15 @@ export const MyOrders = ({ setActivePage }) => {
             </div>
           </div>
         )}
+
+        {/* Review Submission Modal */}
+        <ReviewModal
+          isOpen={isReviewModalOpen}
+          onClose={() => setIsReviewModalOpen(false)}
+          onReviewSubmitted={(newRev) => {
+            if (addReview) addReview(newRev);
+          }}
+        />
 
       </div>
     </div>

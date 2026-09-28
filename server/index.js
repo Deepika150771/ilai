@@ -238,19 +238,28 @@ app.post('/api/orders/:id/update-proof', upload.single('payment_proof'), async (
   }
 });
 
-// 7. Test Email Dispatch Utility
-app.post('/api/test-email', async (req, res) => {
+// 8. Fetch All Product Reviews
+app.get('/api/reviews', async (req, res) => {
   try {
-    const { to_email } = req.body;
-    const result = await sendEmail({
-      to: to_email || 'info.ilai@gmail.com',
-      subject: 'ilai Email Service Diagnostic Test',
-      html: '<h2>🌿 ilai Email System Operational</h2><p>This is a test verification email from info.ilai@gmail.com.</p>',
-      logType: 'Diagnostic Test'
-    });
-    res.json(result);
+    const reviews = await db.getAllReviews();
+    res.json(reviews);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+});
+
+// 9. Customer Submits Rating & Review
+app.post('/api/reviews', async (req, res) => {
+  try {
+    const { customer_name, district, rating, comment } = req.body;
+    if (!comment || !rating) {
+      return res.status(400).json({ error: 'Rating and feedback comment are required.' });
+    }
+
+    const review = await db.createReview({ customer_name, district, rating, comment });
+    res.status(201).json({ success: true, review });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to submit review' });
   }
 });
 

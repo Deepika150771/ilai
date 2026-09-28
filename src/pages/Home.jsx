@@ -1,10 +1,12 @@
-import React from 'react';
-import { Leaf, ShieldCheck, Heart, Sparkles, ArrowRight, Truck, RefreshCw, CheckCircle2, Award, Star, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { Leaf, ShieldCheck, Heart, Sparkles, ArrowRight, Truck, RefreshCw, CheckCircle2, Award, Star, MapPin, MessageSquarePlus } from 'lucide-react';
 import { ProblemSection } from '../components/ProblemSection';
+import { ReviewModal } from '../components/ReviewModal';
 import { useCart } from '../context/CartContext';
 
 export const Home = ({ setActivePage }) => {
-  const { addToCart } = useCart();
+  const { addToCart, reviews, addReview } = useCart();
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const sampleProduct = {
     id: 'pad-xl-6',
@@ -220,52 +222,63 @@ export const Home = ({ setActivePage }) => {
 
       {/* 4. REVIEWS & TESTIMONIALS */}
       <section className="py-20 bg-[#FAF7F2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-            <div className="flex justify-center gap-1 text-amber-500 mb-2">
-              {[...Array(5)].map((_, i) => <Star key={i} size={20} fill="currentColor" />)}
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="flex justify-center gap-1 text-amber-500 mb-1">
+              {[...Array(5)].map((_, i) => <Star key={i} size={22} fill="currentColor" />)}
             </div>
             <h2 className="font-heading text-3xl font-bold text-[#1E3A2B]">Loved By Women Across Tamil Nadu</h2>
-            <p className="text-xs text-gray-600">Real feedback from early adopters in Chennai, Coimbatore, Madurai, and Trichy.</p>
+            <p className="text-xs sm:text-sm text-gray-600 font-medium">
+              Real feedback and ratings from customers in Chennai, Coimbatore, Madurai, Trichy, and Salem.
+            </p>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setIsReviewModalOpen(true)}
+                className="bg-[#2E6F40] hover:bg-[#255A33] text-white font-bold px-6 py-3 rounded-xl text-xs shadow-md transition-all inline-flex items-center gap-2"
+              >
+                <MessageSquarePlus size={16} />
+                <span>Rate Our Product & Leave Feedback ⭐</span>
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-soft space-y-4">
-              <div className="flex text-amber-400 gap-1"><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /></div>
-              <p className="text-xs text-gray-700 leading-relaxed font-medium">
-                "I used to suffer from severe rashes every month with plastic pads. Switching to ilai banana fiber pads completely solved it! Extremely soft and so lightweight."
-              </p>
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                <span className="font-bold text-[#1E3A2B]">Divya M.</span>
-                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded">Chennai</span>
+            {(reviews && reviews.length > 0 ? reviews : [
+              { id: 1, customer_name: "Divya M.", district: "Chennai", rating: 5, comment: "I used to suffer from severe rashes every month with plastic pads. Switching to ILAI plant-based pads completely solved it! Extremely soft and so lightweight." },
+              { id: 2, customer_name: "Sangeetha V.", district: "Coimbatore", rating: 5, comment: "Finding an affordable plastic-free pad for ₹45 per pack is amazing. Plus, knowing it comes from upcycled plant fibres makes me feel so proud!" },
+              { id: 3, customer_name: "Meena R.", district: "Madurai", rating: 5, comment: "Order reached Madurai in just 2 days via ST Courier. The Cash on Delivery process was smooth and receipt confirmation was emailed instantly." }
+            ]).map(rev => (
+              <div key={rev.id || Math.random()} className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-soft space-y-4 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex text-amber-400 gap-1">
+                    {[...Array(rev.rating || 5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+                  </div>
+                  <p className="text-xs text-gray-700 leading-relaxed font-medium">
+                    "{rev.comment}"
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <span className="font-bold text-[#1E3A2B]">{rev.customer_name || 'Verified Customer'}</span>
+                  <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded">{rev.district || 'Tamil Nadu'}</span>
+                </div>
               </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-soft space-y-4">
-              <div className="flex text-amber-400 gap-1"><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /></div>
-              <p className="text-xs text-gray-700 leading-relaxed font-medium">
-                "Finding an affordable plastic-free pad for ₹45 per pack is amazing. Plus, knowing it comes from upcycled water hyacinth from our TN lakes makes me feel so proud!"
-              </p>
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                <span className="font-bold text-[#1E3A2B]">Sangeetha V.</span>
-                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded">Coimbatore</span>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border border-emerald-100 shadow-soft space-y-4">
-              <div className="flex text-amber-400 gap-1"><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /></div>
-              <p className="text-xs text-gray-700 leading-relaxed font-medium">
-                "Order reached Madurai in just 2 days via ST Courier. The GPay payment process was smooth and receipt confirmation was emailed instantly."
-              </p>
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                <span className="font-bold text-[#1E3A2B]">Meena R.</span>
-                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded">Madurai</span>
-              </div>
-            </div>
-
+            ))}
           </div>
+
+        </div>
+
+        {/* Review Submission Modal */}
+        <ReviewModal
+          isOpen={isReviewModalOpen}
+          onClose={() => setIsReviewModalOpen(false)}
+          onReviewSubmitted={(newRev) => {
+            if (addReview) addReview(newRev);
+          }}
+        />
+      </section>
 
         </div>
       </section>

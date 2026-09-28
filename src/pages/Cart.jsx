@@ -452,6 +452,19 @@ export const Cart = ({ setActivePage }) => {
                     </button>
                   </div>
 
+                  {/* Cash On Delivery Explanation Box */}
+                  {formData.payment_method === 'cod' && (
+                    <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-300 text-xs text-emerald-950 space-y-1 shadow-sm">
+                      <div className="font-bold flex items-center gap-2 text-[#2E6F40]">
+                        <Truck size={18} />
+                        <span>Cash On Delivery (COD) Selected</span>
+                      </div>
+                      <p className="text-emerald-900 text-xs leading-relaxed">
+                        ✓ No advance online payment required! You will pay <strong>₹{totalAmount}</strong> in cash directly to the ST Courier delivery executive when your parcel arrives at your address.
+                      </p>
+                    </div>
+                  )}
+
                   {/* GPay QR & UTR Details Box */}
                   {formData.payment_method === 'gpay' && (
                     <div className="p-5 bg-gradient-to-br from-emerald-50 to-amber-50 rounded-2xl border border-emerald-200 space-y-4">

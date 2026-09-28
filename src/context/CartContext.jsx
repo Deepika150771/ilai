@@ -23,7 +23,35 @@ export const CartProvider = ({ children }) => {
     }
   });
 
-  const [toast, setToast] = useState(null);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch('/api/reviews');
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setReviews(data);
+          return;
+        }
+      }
+    } catch (e) {}
+
+    // Fallback to local storage
+    try {
+      const saved = localStorage.getItem('ilai_customer_reviews');
+      if (saved) setReviews(JSON.parse(saved));
+    } catch (e) {}
+  };
+
+  const addReview = (newRev) => {
+    setReviews(prev => [newRev, ...prev]);
+  };
 
   const addSavedOrder = (order) => {
     setSavedOrders(prev => {
@@ -104,6 +132,8 @@ export const CartProvider = ({ children }) => {
       shippingFee,
       savedOrders,
       addSavedOrder,
+      reviews,
+      addReview,
       toast,
       showToast
     }}>

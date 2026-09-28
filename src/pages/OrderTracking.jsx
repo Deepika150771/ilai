@@ -6,6 +6,7 @@ export const OrderTracking = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedStageMap, setSelectedStageMap] = useState({});
 
   // Check URL query parameters for auto-search (e.g., ?query=#ILAI-001)
   useEffect(() => {
@@ -92,6 +93,58 @@ export const OrderTracking = () => {
       case 'shipped': return 4;
       case 'delivered': return 5;
       default: return 1;
+    }
+  };
+
+  const getStageInfo = (stepNumber, order) => {
+    switch (stepNumber) {
+      case 1:
+        return {
+          title: "1. Order Received",
+          badge: "Received",
+          icon: Clock,
+          color: "bg-blue-50 border-blue-200 text-blue-900",
+          desc: "Order successfully placed and recorded in our Tamil Nadu dispatch log.",
+          details: `Order #${order.order_number} registered on ${new Date(order.created_at || Date.now()).toLocaleDateString('en-IN')}. Delivery address: ${order.district}, TN.`
+        };
+      case 2:
+        return {
+          title: "2. Order Confirmed",
+          badge: "Confirmed",
+          icon: ShieldCheck,
+          color: "bg-emerald-50 border-emerald-300 text-emerald-900",
+          desc: "Payment / COD verified. Order approved for eco-packaging queue.",
+          details: order.payment_method === 'cod' ? "Cash on Delivery (COD) approved. Doorstep collection enabled for ST Courier." : "GPay payment verified by merchant."
+        };
+      case 3:
+        return {
+          title: "3. Packaging in Progress",
+          badge: "Packing",
+          icon: Package,
+          color: "bg-amber-50 border-amber-300 text-amber-950",
+          desc: "Handcrafted 100% plastic-free banana fibre pads packaging at Coimbatore facility.",
+          details: "Item: ilai XL Biodegradable Pads (6 Pads Pack). Eco-box packed with tamper-proof security seal."
+        };
+      case 4:
+        return {
+          title: "4. Shipped via Courier",
+          badge: "Shipped",
+          icon: Truck,
+          color: "bg-sky-50 border-sky-300 text-sky-950",
+          desc: "Consignment handed over to ST Courier for fast Tamil Nadu delivery.",
+          details: `Waybill / Tracking No: ${order.tracking_number || `TN-STC-${String(order.id).padStart(3, '0')}`}. Courier: ${order.courier_name || 'ST Courier'}. Est. Delivery: 24-48 hours.`
+        };
+      case 5:
+        return {
+          title: "5. Delivered to Doorstep",
+          badge: "Delivered",
+          icon: CheckCircle2,
+          color: "bg-emerald-100 border-emerald-400 text-emerald-950",
+          desc: "Package delivered safely. Payment collected by ST Courier executive.",
+          details: `Total ₹${order.total_amount} paid via Cash on Delivery. Enjoy natural eco-comfort!`
+        };
+      default:
+        return null;
     }
   };
 
@@ -216,41 +269,90 @@ export const OrderTracking = () => {
 
               {/* Status Stepper Progress Bar */}
               <div className="space-y-3 pt-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#488B57] block">Live Status Progress</span>
-                
-                <div className="grid grid-cols-5 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-semibold">
-                  
-                  {/* Step 1: Received */}
-                  <div className={`p-2.5 rounded-xl border ${step >= 1 ? 'bg-emerald-50 border-emerald-300 text-[#2E6F40]' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
-                    <Clock size={16} className="mx-auto mb-1" />
-                    <span>1. Received</span>
-                  </div>
-
-                  {/* Step 2: Confirmed */}
-                  <div className={`p-2.5 rounded-xl border ${step >= 2 ? 'bg-emerald-50 border-emerald-300 text-[#2E6F40]' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
-                    <ShieldCheck size={16} className="mx-auto mb-1" />
-                    <span>2. Confirmed</span>
-                  </div>
-
-                  {/* Step 3: Packing */}
-                  <div className={`p-2.5 rounded-xl border ${step >= 3 ? 'bg-emerald-50 border-emerald-300 text-[#2E6F40]' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
-                    <Package size={16} className="mx-auto mb-1" />
-                    <span>3. Packing</span>
-                  </div>
-
-                  {/* Step 4: Shipped */}
-                  <div className={`p-2.5 rounded-xl border ${step >= 4 ? 'bg-emerald-50 border-emerald-300 text-[#2E6F40]' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
-                    <Truck size={16} className="mx-auto mb-1" />
-                    <span>4. Shipped</span>
-                  </div>
-
-                  {/* Step 5: Delivered */}
-                  <div className={`p-2.5 rounded-xl border ${step >= 5 ? 'bg-emerald-50 border-emerald-300 text-[#2E6F40]' : 'bg-gray-50 border-gray-100 text-gray-400'}`}>
-                    <CheckCircle2 size={16} className="mx-auto mb-1" />
-                    <span>5. Delivered</span>
-                  </div>
-
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#1E3A2B] block">
+                    Live Order Stepper (Click any stage to view details)
+                  </span>
+                  <span className="text-[11px] font-bold text-[#2E6F40]">
+                    Current Status: Step {step} of 5
+                  </span>
                 </div>
+                
+                <div className="grid grid-cols-5 gap-1.5 sm:gap-2 text-center text-[10px] sm:text-xs font-bold">
+                  {[
+                    { num: 1, label: "1. Received", icon: Clock },
+                    { num: 2, label: "2. Confirmed", icon: ShieldCheck },
+                    { num: 3, label: "3. Packing", icon: Package },
+                    { num: 4, label: "4. Shipped", icon: Truck },
+                    { num: 5, label: "5. Delivered", icon: CheckCircle2 },
+                  ].map((st) => {
+                    const IconComp = st.icon;
+                    const isReached = step >= st.num;
+                    const isCurrentActive = step === st.num;
+                    const selectedStep = selectedStageMap[order.id] || step;
+                    const isInspected = selectedStep === st.num;
+
+                    let styleClasses = "bg-[#FAF7F2] border-2 border-emerald-200 text-[#1E3A2B] hover:bg-emerald-50 hover:border-[#2E6F40]";
+                    if (isCurrentActive) {
+                      styleClasses = "bg-[#2E6F40] text-white border-2 border-[#1E3A2B] shadow-md scale-[1.02]";
+                    } else if (isReached) {
+                      styleClasses = "bg-emerald-50 border-2 border-emerald-400 text-[#1E3A2B]";
+                    }
+
+                    if (isInspected && !isCurrentActive) {
+                      styleClasses += " ring-2 ring-[#2E6F40] ring-offset-1";
+                    }
+
+                    return (
+                      <button
+                        key={st.num}
+                        type="button"
+                        onClick={() => setSelectedStageMap(prev => ({ ...prev, [order.id]: st.num }))}
+                        className={`p-2.5 rounded-xl transition-all flex flex-col items-center justify-center cursor-pointer ${styleClasses}`}
+                      >
+                        <IconComp size={18} className="mb-1 shrink-0" />
+                        <span className="leading-tight font-extrabold">{st.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Stage Details Inspection Card */}
+                {(() => {
+                  const selectedStep = selectedStageMap[order.id] || step;
+                  const activeStageObj = getStageInfo(selectedStep, order);
+                  if (!activeStageObj) return null;
+
+                  return (
+                    <div className={`p-4 rounded-2xl border ${activeStageObj.color} space-y-2 mt-3 text-xs transition-all shadow-sm`}>
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-extrabold text-sm flex items-center gap-2">
+                          <activeStageObj.icon size={18} className="shrink-0" />
+                          <span>{activeStageObj.title}</span>
+                        </h4>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white border border-current uppercase">
+                          {activeStageObj.badge}
+                        </span>
+                      </div>
+                      <p className="font-semibold text-gray-800">{activeStageObj.desc}</p>
+                      <p className="text-[#1E3A2B] bg-white/70 p-2.5 rounded-xl border border-current/20 leading-relaxed font-mono text-[11px]">
+                        {activeStageObj.details}
+                      </p>
+                      {selectedStep === 4 && (
+                        <div className="pt-1">
+                          <a
+                            href="https://stcourier.com"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 bg-[#2E6F40] text-white font-bold px-3 py-1.5 rounded-lg text-[11px] shadow hover:bg-[#255A33] transition-all"
+                          >
+                            <Truck size={14} /> Open ST Courier Website ↗
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Status Details Alert Box */}

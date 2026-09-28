@@ -84,6 +84,30 @@ export const AdminPanel = () => {
     }
   };
 
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const res = await fetch(`/api/orders/${orderId}/status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          order_status: newStatus,
+          courier_name: 'ST Courier',
+          tracking_number: `TN-STC-${String(orderId).padStart(3, '0')}`
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast(`Order #${orderId} status set to ${newStatus.toUpperCase()}!`);
+        fetchOrders();
+      } else {
+        showToast(data.error || 'Failed to update status', 'error');
+      }
+    } catch (err) {
+      showToast('Error updating status', 'error');
+    }
+  };
+
   const handleRunEmailTest = async () => {
     setTestingEmail(true);
     try {
@@ -316,7 +340,17 @@ export const AdminPanel = () => {
                           </button>
                         )}
 
-                        {/* Action 2: Ship Order */}
+                        {/* Action 2: Mark as Packing */}
+                        {order.order_status !== 'processing' && order.order_status !== 'shipped' && order.order_status !== 'delivered' && (
+                          <button
+                            onClick={() => handleUpdateOrderStatus(order.id, 'processing')}
+                            className="bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold px-3 py-1.5 rounded-lg text-[11px] border border-amber-300 transition-all w-full flex items-center justify-center gap-1"
+                          >
+                            <Package size={12} /> Set to Packing
+                          </button>
+                        )}
+
+                        {/* Action 3: Ship Order */}
                         {order.order_status !== 'shipped' && order.order_status !== 'delivered' && (
                           <button
                             onClick={() => {
@@ -326,6 +360,16 @@ export const AdminPanel = () => {
                             className="bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-3 py-1.5 rounded-lg text-[11px] shadow-sm transition-all w-full flex items-center justify-center gap-1"
                           >
                             <Truck size={12} /> Ship via Courier
+                          </button>
+                        )}
+
+                        {/* Action 4: Mark Delivered */}
+                        {order.order_status === 'shipped' && (
+                          <button
+                            onClick={() => handleUpdateOrderStatus(order.id, 'delivered')}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[11px] shadow-sm transition-all w-full flex items-center justify-center gap-1"
+                          >
+                            <CheckCircle2 size={12} /> Mark Delivered
                           </button>
                         )}
 

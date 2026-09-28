@@ -1,10 +1,35 @@
 import React, { useState } from 'react';
-import { Leaf, ShieldCheck, CheckCircle2, ChevronDown, ChevronUp, ShoppingBag, ArrowRight, Sparkles, RefreshCw, Droplets, Info } from 'lucide-react';
+import { Leaf, ShieldCheck, CheckCircle2, ChevronDown, ChevronUp, ShoppingBag, ArrowRight, Sparkles, RefreshCw, Droplets, Info, Maximize2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export const ProductDetails = ({ setActivePage }) => {
   const { addToCart } = useCart();
   const [openFaq, setOpenFaq] = useState(null);
+  const [selectedImgIndex, setSelectedImgIndex] = useState(0);
+  const [lightboxImg, setLightboxImg] = useState(null);
+
+  const productImages = [
+    {
+      url: '/images/ilai_pack_front.png',
+      title: 'Product Pack Overview',
+      subtitle: 'ilai 6-Packs XL Front Packaging'
+    },
+    {
+      url: '/images/ilai_pad_detail.png',
+      title: 'Pad Close-Up Detail View',
+      subtitle: '290mm Pad with Organic Cotton Top Sheet'
+    },
+    {
+      url: '/images/ilai_materials_showcase.png',
+      title: 'Natural Eco Materials Overview',
+      subtitle: 'Banana Tree Fibre & Upcycled Water Hyacinth'
+    },
+    {
+      url: '/images/ilai_absorbency_demo.png',
+      title: 'Absorbency & Leak Guard Demo',
+      subtitle: '40-50ml Retention & Cornstarch Backing'
+    }
+  ];
 
   const product = {
     id: 'pad-xl-6',
@@ -45,7 +70,7 @@ export const ProductDetails = ({ setActivePage }) => {
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-200 shadow-soft flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 bg-[#E8F5E9] text-[#2E6F40] text-xs font-bold px-3 py-1 rounded-full border border-emerald-200">
-              <Sparkles size={14} /> Full Technical Specifications
+              <Sparkles size={14} /> Full Technical Specifications & Photo Gallery
             </div>
             <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-[#1E3A2B]">
               ilai XL Biodegradable Pads (6 Pack)
@@ -67,6 +92,74 @@ export const ProductDetails = ({ setActivePage }) => {
               <ShoppingBag size={18} />
               <span>Buy Now</span>
             </button>
+          </div>
+        </div>
+
+        {/* High Resolution Product Photos Gallery */}
+        <div className="bg-white rounded-3xl border border-emerald-200 shadow-xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="font-heading text-2xl font-bold text-[#1E3A2B]">
+                Product Photos & Visual Overview
+              </h2>
+              <p className="text-xs text-gray-500">Click any image to view full high-resolution detail.</p>
+            </div>
+
+            <span className="text-xs font-bold text-[#2E6F40] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              4 HD Angles Available
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            {/* Main Featured Photo */}
+            <div className="lg:col-span-8 relative group bg-gradient-to-br from-[#FAF7F2] to-emerald-50/60 rounded-2xl border border-emerald-200 p-4 flex items-center justify-center min-h-[360px] sm:min-h-[420px]">
+              <img
+                src={productImages[selectedImgIndex].url}
+                alt={productImages[selectedImgIndex].title}
+                className="w-full h-auto max-h-[400px] object-contain cursor-pointer transition-all duration-300 group-hover:scale-105"
+                onClick={() => setLightboxImg(productImages[selectedImgIndex].url)}
+              />
+
+              <div className="absolute bottom-4 left-4 bg-[#1E3A2B]/85 backdrop-blur text-white text-xs font-bold px-3.5 py-1.5 rounded-full flex items-center gap-2 shadow">
+                <Sparkles size={14} className="text-amber-300" />
+                <span>{productImages[selectedImgIndex].title} — {productImages[selectedImgIndex].subtitle}</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setLightboxImg(productImages[selectedImgIndex].url)}
+                className="absolute top-4 right-4 bg-white/90 text-[#1E3A2B] p-2.5 rounded-xl shadow border border-emerald-200 hover:bg-white transition-all"
+                title="Expand image"
+              >
+                <Maximize2 size={18} />
+              </button>
+            </div>
+
+            {/* Thumbnail Selectors Sidebar */}
+            <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-3">
+              {productImages.map((img, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setSelectedImgIndex(idx)}
+                  className={`p-3 rounded-2xl border transition-all text-left flex items-center gap-3 bg-white ${
+                    selectedImgIndex === idx
+                      ? 'border-[#2E6F40] ring-2 ring-emerald-300 shadow-md bg-emerald-50/40'
+                      : 'border-gray-200 opacity-80 hover:opacity-100 hover:border-emerald-300'
+                  }`}
+                >
+                  <div className="w-16 h-14 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0 p-1 flex items-center justify-center">
+                    <img src={img.url} alt={img.title} className="w-full h-full object-contain" />
+                  </div>
+                  <div className="space-y-0.5 min-w-0">
+                    <h4 className="font-bold text-xs text-[#1E3A2B] truncate">{img.title}</h4>
+                    <p className="text-[10px] text-gray-500 truncate">{img.subtitle}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+
           </div>
         </div>
 
@@ -186,6 +279,30 @@ export const ProductDetails = ({ setActivePage }) => {
             ))}
           </div>
         </div>
+
+        {/* Lightbox Modal */}
+        {lightboxImg && (
+          <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl p-6 max-w-3xl w-full space-y-4 text-center shadow-2xl relative animate-scale">
+              <button
+                onClick={() => setLightboxImg(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-xl font-bold bg-gray-100 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center"
+              >
+                ✕
+              </button>
+              <h3 className="font-heading font-bold text-lg text-[#1E3A2B]">Full Resolution Photo View</h3>
+              <div className="max-h-[75vh] overflow-auto rounded-2xl border border-gray-200 p-3 bg-[#FAF7F2]">
+                <img src={lightboxImg} alt="Expanded Product View" className="max-w-full h-auto mx-auto rounded-xl object-contain" />
+              </div>
+              <button
+                onClick={() => setLightboxImg(null)}
+                className="bg-[#2E6F40] text-white font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-[#255A33] transition-all"
+              >
+                Close Fullscreen Photo
+              </button>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

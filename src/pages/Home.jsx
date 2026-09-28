@@ -92,22 +92,26 @@ export const Home = ({ setActivePage }) => {
 
             {/* Right Column: Hero Visual Showcase */}
             <div className="lg:col-span-5 relative">
-              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-200 shadow-2xl space-y-6 relative overflow-hidden group">
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-emerald-200 shadow-2xl space-y-5 relative overflow-hidden group">
                 
-                <div className="absolute top-4 right-4 bg-amber-400 text-emerald-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                <div className="absolute top-4 right-4 bg-amber-400 text-emerald-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow z-10">
                   25% OFF
                 </div>
 
-                {/* Hero Product Visual Card */}
-                <div className="h-64 sm:h-72 rounded-2xl bg-gradient-to-br from-emerald-100 via-emerald-50 to-amber-50 flex flex-col items-center justify-center text-center p-6 border border-emerald-100 relative overflow-hidden">
-                  <div className="w-20 h-20 rounded-full bg-white/80 backdrop-blur text-[#2E6F40] flex items-center justify-center mb-3 shadow-inner group-hover:scale-110 transition-transform">
-                    <Leaf size={44} />
+                {/* Hero Real Product Image */}
+                <div 
+                  onClick={() => setActivePage('shop')}
+                  className="rounded-2xl bg-gradient-to-br from-[#FAF7F2] via-emerald-50 to-amber-50/50 flex flex-col items-center justify-center p-4 border border-emerald-200 relative overflow-hidden cursor-pointer group/img"
+                >
+                  <img
+                    src="/images/ilai_pack_front.png"
+                    alt="ilai XL Biodegradable Pads Pack"
+                    className="w-full h-56 sm:h-64 object-contain transition-transform duration-300 group-hover/img:scale-105"
+                  />
+                  <div className="mt-2 bg-white/95 backdrop-blur px-3 py-1 rounded-full border border-emerald-200 text-xs font-bold text-[#1E3A2B] shadow-sm flex items-center gap-1.5">
+                    <Sparkles size={12} className="text-amber-500" />
+                    <span>6 Heavy Flow XL Pads (290mm)</span>
                   </div>
-                  <span className="font-heading font-extrabold text-2xl text-[#1E3A2B]">ilai XL</span>
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#488B57]">6 Pads Pack • 290mm</span>
-                  <span className="mt-2 text-xs text-gray-600 font-medium bg-white/90 px-3 py-1 rounded-full border border-emerald-100">
-                    Upcycled Hyacinth + Banana Fiber
-                  </span>
                 </div>
 
                 {/* Price & Spec snippet */}
@@ -123,9 +127,9 @@ export const Home = ({ setActivePage }) => {
 
                   <button
                     onClick={() => setActivePage('product')}
-                    className="text-xs font-bold text-[#2E6F40] hover:text-[#1E3A2B] underline flex items-center gap-1"
+                    className="bg-[#2E6F40] hover:bg-[#255A33] text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1 shadow transition-all"
                   >
-                    Full Specs <ArrowRight size={12} />
+                    <span>View Photos</span> <ArrowRight size={14} />
                   </button>
                 </div>
 

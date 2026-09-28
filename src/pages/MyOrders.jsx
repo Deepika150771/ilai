@@ -122,7 +122,7 @@ export const MyOrders = ({ setActivePage }) => {
   };
 
   return (
-    <div className="py-12 bg-[#FAF7F2] min-h-[80vh]">
+    <div className="py-12 bg-gradient-to-b from-[#F0F7F1] via-white to-[#E8F3EA] min-h-[85vh]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Header */}

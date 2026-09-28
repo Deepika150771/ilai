@@ -25,7 +25,7 @@ export const Home = ({ setActivePage }) => {
     <div className="space-y-0">
       
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-emerald-50/60 to-[#FAF7F2] pt-12 pb-20 lg:pt-20 lg:pb-28">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#F0F7F1] via-white to-[#E8F3EA] pt-12 pb-20 lg:pt-20 lg:pb-28">
         {/* Soft background glow circles */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100/50 rounded-full blur-3xl -z-0 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-100/40 rounded-full blur-3xl -z-0 pointer-events-none"></div>
@@ -221,7 +221,7 @@ export const Home = ({ setActivePage }) => {
       </section>
 
       {/* 4. REVIEWS & TESTIMONIALS */}
-      <section className="py-20 bg-[#FAF7F2]">
+      <section className="py-20 bg-gradient-to-b from-[#E8F3EA] via-white to-[#F0F7F1]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">

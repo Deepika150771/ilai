@@ -60,7 +60,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] font-sans antialiased text-gray-800 selection:bg-emerald-200 selection:text-emerald-950">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#F0F7F1] via-[#FAFCFA] to-[#EFF6F0] font-sans antialiased text-gray-800 selection:bg-emerald-200 selection:text-emerald-950">
       <Header activePage={activePage} setActivePage={handlePageChange} />
       
       <main className="flex-1">

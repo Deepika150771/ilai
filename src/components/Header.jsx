@@ -24,7 +24,7 @@ export const Header = ({ activePage, setActivePage }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#E8F5E9] transition-all">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-100/80 shadow-sm transition-all">
       {/* Top Announcement Bar */}
       <div className="bg-[#2E6F40] text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2 shadow-inner">
         <span className="bg-amber-400 text-emerald-950 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Launch Offer</span>

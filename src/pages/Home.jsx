@@ -101,16 +101,16 @@ export const Home = ({ setActivePage }) => {
                 {/* Hero Real Product Image */}
                 <div 
                   onClick={() => setActivePage('shop')}
-                  className="rounded-2xl bg-gradient-to-br from-[#FAF7F2] via-emerald-50 to-amber-50/50 flex flex-col items-center justify-center p-4 border border-emerald-200 relative overflow-hidden cursor-pointer group/img"
+                  className="rounded-2xl bg-gradient-to-br from-[#FAF7F2] via-emerald-50 to-amber-50/50 flex flex-col items-center justify-center p-3 border border-emerald-200 relative overflow-hidden cursor-pointer group/img"
                 >
                   <img
-                    src="/images/ilai_pack_front.png"
-                    alt="ilai XL Biodegradable Pads Pack"
-                    className="w-full h-56 sm:h-64 object-contain transition-transform duration-300 group-hover/img:scale-105"
+                    src="/images/ilai_box_front.jpg"
+                    alt="ILAI Sustainable Femcare Box"
+                    className="w-full h-56 sm:h-64 object-contain rounded-xl transition-transform duration-300 group-hover/img:scale-105"
                   />
                   <div className="mt-2 bg-white/95 backdrop-blur px-3 py-1 rounded-full border border-emerald-200 text-xs font-bold text-[#1E3A2B] shadow-sm flex items-center gap-1.5">
                     <Sparkles size={12} className="text-amber-500" />
-                    <span>6 Heavy Flow XL Pads (290mm)</span>
+                    <span>ILAI Sanitary Napkins (6 Pads Pack)</span>
                   </div>
                 </div>
 

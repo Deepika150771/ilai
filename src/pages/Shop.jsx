@@ -10,33 +10,43 @@ export const Shop = ({ setActivePage }) => {
 
   const productImages = [
     {
-      url: '/images/ilai_pack_front.png',
-      label: 'Pack Overview',
-      subtitle: '6 Pads XL Pack Front'
+      url: '/images/ilai_box_front.jpg',
+      label: 'Box Front View',
+      subtitle: 'ILAI 6-Pads Outer Box Packaging'
     },
     {
-      url: '/images/ilai_pad_detail.png',
-      label: 'Pad View',
-      subtitle: '290mm Pad Detail'
+      url: '/images/ilai_box_open.jpg',
+      label: 'Open Box View',
+      subtitle: '6 Individually Wrapped Napkins Inside'
     },
     {
-      url: '/images/ilai_materials_showcase.png',
-      label: 'Natural Materials',
-      subtitle: 'Banana Fibre & Hyacinth'
+      url: '/images/ilai_wrapper_front.jpg',
+      label: 'Individual Pad Front',
+      subtitle: 'Hygienic Sealed Sanitary Napkin Pouch'
     },
     {
-      url: '/images/ilai_absorbency_demo.png',
-      label: 'Absorbency Demo',
-      subtitle: '40-50ml Retention Test'
+      url: '/images/ilai_box_back.jpg',
+      label: 'Box Back Specs',
+      subtitle: 'Materials, Usage & Customer Care'
+    },
+    {
+      url: '/images/ilai_wrapper_back.jpg',
+      label: 'Individual Pad Back',
+      subtitle: 'Plant-Based Layer Breakdown'
+    },
+    {
+      url: '/images/ilai_box_top.jpg',
+      label: 'Box Top View',
+      subtitle: 'Gold Embossed Premium Cover'
     }
   ];
 
   const product = {
     id: 'pad-xl-6',
-    title: 'ilai XL Biodegradable Sanitary Pads (6 Pads Pack)',
+    title: 'ILAI Sustainable Femcare Sanitary Napkins (6 Pads Pack)',
     price: 45,
     mrp: 60,
-    pack_details: '6 pads per pack | XL size (290mm) | Banana Fibre & Water Hyacinth Core'
+    pack_details: '6 pads per pack | XL size (290mm) | Plant-based Absorbent Core'
   };
 
   const handleAddToCart = () => {
@@ -55,13 +65,13 @@ export const Shop = ({ setActivePage }) => {
         {/* Page Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-bold uppercase tracking-widest text-[#488B57] bg-[#E8F5E9] px-3.5 py-1 rounded-full border border-emerald-200">
-            Pure Organic Period Care
+            Official Product Gallery
           </span>
           <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-[#1E3A2B]">
-            Shop Eco Sanitary Pads
+            Shop ILAI Eco Sanitary Napkins
           </h1>
           <p className="text-gray-600 text-xs sm:text-sm">
-            100% Plastic-free, zero SAP chemicals, biodegradable in 180 days. Delivered directly across Tamil Nadu.
+            Plant-based materials, 100% plastic-free, zero harmful chemicals. Delivered directly across Tamil Nadu.
           </p>
         </div>
 
@@ -75,24 +85,24 @@ export const Shop = ({ setActivePage }) => {
               {/* Badges Overlay */}
               <div className="flex items-center justify-between z-10 mb-4">
                 <div className="bg-[#2E6F40] text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow">
-                  <Leaf size={14} /> 100% Biodegradable
+                  <Leaf size={14} /> 100% Plant Fibre Based
                 </div>
                 <div className="bg-amber-400 text-emerald-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow">
-                  Launch Deal ₹45
+                  Launch Offer ₹45
                 </div>
               </div>
 
               {/* Main Product Image Display Box */}
-              <div className="relative group rounded-2xl overflow-hidden bg-white border border-emerald-200 shadow-soft my-2 flex items-center justify-center min-h-[320px] sm:min-h-[380px]">
+              <div className="relative group rounded-2xl overflow-hidden bg-white border border-emerald-200 shadow-soft my-2 flex items-center justify-center min-h-[340px] sm:min-h-[400px]">
                 <img
                   src={productImages[activeImageIndex].url}
                   alt={productImages[activeImageIndex].label}
-                  className="w-full h-auto max-h-[360px] object-contain p-4 transition-all duration-300 group-hover:scale-105 cursor-pointer"
+                  className="w-full h-auto max-h-[380px] object-contain p-2 transition-all duration-300 group-hover:scale-105 cursor-pointer rounded-xl"
                   onClick={() => setLightboxImage(productImages[activeImageIndex].url)}
                 />
                 
                 {/* Active View Label Tag */}
-                <div className="absolute bottom-3 left-3 bg-[#1E3A2B]/85 backdrop-blur text-white text-[11px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow">
+                <div className="absolute bottom-3 left-3 bg-[#1E3A2B]/85 backdrop-blur text-white text-[11px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow">
                   <Sparkles size={12} className="text-amber-300" />
                   <span>{productImages[activeImageIndex].label}: {productImages[activeImageIndex].subtitle}</span>
                 </div>
@@ -108,23 +118,23 @@ export const Shop = ({ setActivePage }) => {
                 </button>
               </div>
 
-              {/* 4 Interactive Thumbnail Selectors */}
-              <div className="grid grid-cols-4 gap-2 pt-4">
+              {/* 6 Interactive Thumbnail Selectors */}
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-4">
                 {productImages.map((img, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`p-1.5 rounded-xl border transition-all text-left bg-white ${
+                    className={`p-1 rounded-xl border transition-all text-left bg-white ${
                       activeImageIndex === idx
                         ? 'border-[#2E6F40] ring-2 ring-emerald-300 shadow-md scale-105'
                         : 'border-gray-200 opacity-70 hover:opacity-100 hover:border-emerald-300'
                     }`}
                   >
-                    <div className="h-16 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center p-1">
-                      <img src={img.url} alt={img.label} className="w-full h-full object-contain" />
+                    <div className="h-14 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center p-0.5">
+                      <img src={img.url} alt={img.label} className="w-full h-full object-contain rounded" />
                     </div>
-                    <span className="text-[10px] font-bold text-[#1E3A2B] block text-center mt-1 truncate">
+                    <span className="text-[9px] font-bold text-[#1E3A2B] block text-center mt-1 truncate">
                       {img.label}
                     </span>
                   </button>
@@ -133,10 +143,10 @@ export const Shop = ({ setActivePage }) => {
 
               {/* Micro guarantee row */}
               <div className="grid grid-cols-2 gap-2 text-center text-[11px] font-semibold text-emerald-950 pt-4 mt-2 border-t border-emerald-200/60">
-                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ Zero SAP Chemicals</div>
-                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ Organic Cotton Top</div>
-                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ 40–50ml Flow Retention</div>
-                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ 180 Days Degradation</div>
+                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ Plant-Based Materials</div>
+                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ 100% Biodegradable</div>
+                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ Soft & Absorbent</div>
+                <div className="bg-white/70 p-2 rounded-lg border border-emerald-100">✓ No Plastic / Chemicals</div>
               </div>
 
             </div>
@@ -151,14 +161,14 @@ export const Shop = ({ setActivePage }) => {
                 </div>
 
                 <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-[#1E3A2B]">
-                  ilai XL Biodegradable Sanitary Pads
+                  ILAI Sustainable Femcare Sanitary Napkins
                 </h2>
-                <p className="text-xs text-gray-500 font-medium mt-1">Pack of 6 Extra Large Heavy Flow Pads (290mm Length)</p>
+                <p className="text-xs text-gray-500 font-medium mt-1">Pack of 6 Individually Wrapped Sanitary Napkins</p>
 
                 {/* Pricing Box */}
                 <div className="mt-4 p-4 bg-[#FAF7F2] rounded-2xl border border-emerald-100 flex items-center justify-between">
                   <div>
-                    <span className="text-xs text-gray-500 font-semibold block uppercase">Launch Promotional Price</span>
+                    <span className="text-xs text-gray-500 font-semibold block uppercase">Launch Special Price</span>
                     <div className="flex items-baseline gap-2">
                       <span className="text-3xl font-extrabold text-[#1E3A2B]">₹45</span>
                       <span className="text-sm text-gray-400 line-through">MRP ₹60</span>
@@ -219,11 +229,13 @@ export const Shop = ({ setActivePage }) => {
                 </button>
               </div>
 
-              {/* Shipping Notice Box */}
-              <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
-                <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
-                <div>
-                  <strong>Tamil Nadu Shipping Only:</strong> Orders are dispatched via ST Courier from Chennai/Coimbatore. Delivery estimated in 2-3 business days.
+              {/* Customer Care snippet */}
+              <div className="p-3.5 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-xs text-emerald-950 space-y-1">
+                <div className="font-bold flex items-center gap-2 text-[#1E3A2B]">
+                  <span>📞 Official Customer Care: 8072757497</span>
+                </div>
+                <div className="text-[11px] text-gray-600">
+                  Email: info.ilaiofficial@gmail.com • Batch: ILAI-SEP26-001
                 </div>
               </div>
 
@@ -234,23 +246,23 @@ export const Shop = ({ setActivePage }) => {
 
         {/* Lightbox High Resolution Preview Modal */}
         {lightboxImage && (
-          <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl p-6 max-w-3xl w-full space-y-4 text-center shadow-2xl relative animate-scale">
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl p-6 max-w-4xl w-full space-y-4 text-center shadow-2xl relative animate-scale">
               <button
                 onClick={() => setLightboxImage(null)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-xl font-bold bg-gray-100 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center"
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-xl font-bold bg-gray-100 hover:bg-gray-200 w-9 h-9 rounded-full flex items-center justify-center"
               >
                 ✕
               </button>
-              <h3 className="font-heading font-bold text-lg text-[#1E3A2B]">High Resolution Product Photo View</h3>
-              <div className="max-h-[75vh] overflow-auto rounded-2xl border border-gray-200 p-3 bg-[#FAF7F2]">
-                <img src={lightboxImage} alt="Product Zoom View" className="max-w-full h-auto mx-auto rounded-xl object-contain" />
+              <h3 className="font-heading font-bold text-xl text-[#1E3A2B]">Official ILAI Product Photo View</h3>
+              <div className="max-h-[78vh] overflow-auto rounded-2xl border border-gray-200 p-2 bg-[#FAF7F2]">
+                <img src={lightboxImage} alt="ILAI Product Photo Zoom" className="max-w-full h-auto mx-auto rounded-xl object-contain max-h-[70vh]" />
               </div>
               <button
                 onClick={() => setLightboxImage(null)}
                 className="bg-[#2E6F40] text-white font-bold px-6 py-2.5 rounded-xl text-xs hover:bg-[#255A33] transition-all"
               >
-                Close Fullscreen Photo
+                Close Fullscreen View
               </button>
             </div>
           </div>

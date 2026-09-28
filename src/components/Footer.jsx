@@ -8,7 +8,7 @@ export const Footer = ({ setActivePage }) => {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-white via-[#F4F9F5] to-[#E8F3EA] border-t border-emerald-100 pt-16 pb-12 text-[#1E3A2B]">
+    <footer className="bg-gradient-to-b from-white via-[#F4F9F5] to-[#E8F3EA] border-t border-emerald-100/80 pt-16 pb-12 text-[#1E3A2B]">
       {/* Brand Trust Feature Highlights */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 bg-white rounded-2xl border border-emerald-100 shadow-soft">
